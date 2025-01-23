@@ -1,0 +1,135 @@
+<!-- weatherapp/templates/weatherapp/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Data</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        /* Form Styles */
+        .weather-form {
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .weather-form label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .weather-form input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .weather-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .weather-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Weather Data Styles */
+        .weather-info {
+            text-align: center;
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 50%;
+            margin: 30px auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-info p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        /* Error Message Styles */
+        .error-message {
+            text-align: center;
+            color: red;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .weather-info {
+                width: 80%;
+            }
+            .weather-form {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Data</h1>
+    
+    <!-- Weather Form -->
+    <div class="weather-form">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="city">Enter City Name:</label>
+            <input type="text" id="city" name="city" value="{{ city }}" required>
+            <button type="submit">Get Weather</button>
+        </form>
+    </div>
+
+    <!-- Weather Data Display -->
+    {% if weather %}
+        <div class="weather-info">
+            <h2>Weather in {{ city }}</h2>
+            <p><strong>Temperature:</strong> {{ weather.currentConditions.temp }}°C</p>
+            <p><strong>Condition:</strong> {{ weather.currentConditions.conditions }}</p>
+            <p><strong>Humidity:</strong> {{ weather.currentConditions.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ weather.currentConditions.windspeed }} km/h</p>
+        </div>
+    {% elif error_message %}
+        <div class="error-message">
+            <p>{{ error_message }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
